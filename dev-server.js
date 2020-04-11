@@ -3,10 +3,16 @@ const { createProxyServer } = require('http-proxy');
 const Path = require('path');
 const Bundler = require('parcel-bundler');
 
-const backEnd = {
+const localhostBackEnd = {
 	protocol: 'http',
 	host: 'localhost',
 	port: 3000
+};
+
+const herokuBackEnd = {
+	protocol: 'http',
+	host: 'squiggle-backend.herokuapp.com',
+	port: 80
 };
 
 const parcelEnd = {
@@ -33,7 +39,7 @@ const server = createServer((req, res) => {
 	if (req.url.includes('/api/')) {
 		proxy.web(req, res, {
 			// back-end server, local tomcat or otherwise
-			target: backEnd,
+			target: localhostBackEnd,
 			changeOrigin: true,
 			autoRewrite: true
 		});
