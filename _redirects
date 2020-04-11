@@ -1,2 +1,2 @@
 /api/*  https://squiggle-backend.herokuapp.com/api/:splat  200
-/* /index.html 200
+/drawing/* /index.html 200
