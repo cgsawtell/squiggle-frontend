@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "parcel build index.html",
+		"build-netlify": "parcel build index.html && mv _redirects ./dist/",
 		"start": "node dev-server.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
