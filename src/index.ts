@@ -9,9 +9,10 @@ import { Colour } from "./interfaces";
 
 let activeDrawing: Drawing;
 let activeRender: Renderer;
+let router: Navigo;
 
 const init = () => {
-	const router = new Navigo()
+	router = new Navigo()
 	const canvas = document.getElementById("stage") as HTMLCanvasElement
 	activeRender = new Renderer(canvas)
 	new InputManager(canvas);
@@ -41,12 +42,15 @@ const loadDrawing = async (id: number) => {
 	activeRender.activeDrawing = activeDrawing;
 }
 
-const saveDrawing = () => {
+const saveDrawing = async () => {
 	if(activeDrawing.id){
 		DrawingAPI.patch(activeDrawing)
 	}
 	else{
-		DrawingAPI.post(activeDrawing)
+		const {id} = await DrawingAPI.post(activeDrawing)
+		router.pause();
+		router.navigate(`drawing/${id}`);
+		router.resume();
 	}
 }
 
