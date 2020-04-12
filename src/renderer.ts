@@ -13,8 +13,8 @@ const HexColourPalete: Record<Colour, string> = {
 export default class Renderer {
 	canvas: HTMLCanvasElement;
 	ctx: CanvasRenderingContext2D;
-	#virtualWidth: number = window.innerWidth * window.devicePixelRatio;
-	#virtualHeight: number = window.innerWidth * window.devicePixelRatio;
+	#virtualWidth: number = this.clientWidth * window.devicePixelRatio;
+	#virtualHeight: number = this.clientHeight * window.devicePixelRatio;
 	#activeDrawing: Drawing | null = null;
 	constructor( canvas: HTMLCanvasElement ) {
 		this.canvas = canvas;
@@ -34,14 +34,19 @@ export default class Renderer {
 	}
 	
 	setCanvasScale = () => {
-		this.#virtualWidth = window.innerWidth * window.devicePixelRatio
-		this.#virtualHeight = window.innerHeight * window.devicePixelRatio
+		this.#virtualWidth = this.clientWidth * window.devicePixelRatio
+		this.#virtualHeight = this.clientHeight * window.devicePixelRatio
 		this.canvas.width = this.#virtualWidth
 		this.canvas.height = this.#virtualHeight
-		this.canvas.style.width = window.innerWidth + "px"
-		this.canvas.style.height = window.innerHeight + "px"
+		this.canvas.style.width = this.clientWidth + "px"
+		this.canvas.style.height = this.clientHeight + "px"
 	}
-
+	get clientWidth (){
+		return document.documentElement.clientWidth
+	}
+	get clientHeight (){
+		return document.documentElement.clientHeight
+	}
 	handleStrokeUpdated = (updatedStroke: Stroke) => {
 		const strokeSegments = updatedStroke.segments
 		const previousPenPosition = strokeSegments[strokeSegments.length - 2]
