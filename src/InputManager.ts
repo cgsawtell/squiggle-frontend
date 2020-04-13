@@ -6,16 +6,12 @@ import { Vector2 } from "./interfaces";
 export default class InputManager{
 	isPointerDown: boolean = false;
 	constructor(canvas: HTMLCanvasElement) {
-		if(isTouchDevice){
 			canvas.addEventListener("touchstart", this.handleInputStart)
 			document.addEventListener("touchend", this.handleInputEnd)
 			canvas.addEventListener("touchmove", this.handleInputMove)
-		}
-		else{
 			canvas.addEventListener("mousedown", this.handleInputStart)
 			document.addEventListener("mouseup", this.handleInputEnd)
 			canvas.addEventListener("mousemove", this.handleInputMove)
-		}
 	}
 	handleInputStart = (e:MouseEvent | TouchEvent) => {
 		//On desktop we need to make sure the context menu wasn't just opened
