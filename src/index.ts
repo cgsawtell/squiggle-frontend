@@ -6,10 +6,13 @@ import * as DrawingAPI from "./api/drawing";
 import pubsub from "./pubsub";
 import { PalleteChannel } from "./channels";
 import { Colour } from "./interfaces";
+import { UI } from "./ui";
+
 
 let activeDrawing: Drawing;
 let activeRender: Renderer;
 let router: Navigo;
+let activeUI = new UI()
 
 const init = () => {
 	router = new Navigo()
@@ -55,7 +58,7 @@ const saveDrawing = async () => {
 }
 
 const setupUI = () => {
-	const saveButton = document.getElementById("save")
+	const saveButton = document.getElementById("save") as HTMLButtonElement
 	const blackButton = document.getElementById("black")
 	const redButton = document.getElementById("red")
 	const greenButton = document.getElementById("green")
@@ -75,7 +78,13 @@ const setupUI = () => {
 
 
 	if(saveButton){
-		saveButton.addEventListener("click", () => saveDrawing())
+		saveButton.addEventListener("click", async () => {
+			activeUI.showSavingIndicator();
+			saveButton.disabled = true;
+			await saveDrawing()
+			saveButton.disabled = false;
+			activeUI.hideSavingIndicator();
+		})
 	}
 }
 

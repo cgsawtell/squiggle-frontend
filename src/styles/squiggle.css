@@ -113,3 +113,12 @@ button {
 	bottom: 1rem; 
 	right: 1rem;
 }
+
+.saving-indicator {
+	transition: opacity 150ms;
+	pointer-events: none;
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+	opacity: 0;
+}
