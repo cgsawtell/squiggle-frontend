@@ -12,6 +12,11 @@ body {
 	position:relative;
 }
 
+button:focus,
+input:focus { 
+	outline: none;
+}
+
 /*button reset*/
 button {
   padding: 0;
@@ -97,6 +102,7 @@ button {
 	border: solid 1px var(--button-green);
 }
 
+.btn--outline:focus,
 .btn--outline:hover {
 	background-color: var(--button-green);
 	color: rgba(255,255,255, .9);
