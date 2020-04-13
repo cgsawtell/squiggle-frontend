@@ -1,0 +1,109 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+	font-family: 'Muli', sans-serif;
+	margin: 0; 
+	position:relative;
+}
+
+/*button reset*/
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+:root{
+	--drawing-backgound: #FFFFFC;
+	--button-green: #26AF3F;
+	--palette-black: #343030;
+	--palette-red: #D9392E;
+	--palette-green: #59D92E;
+	--palette-blue: #2E7DD9;
+}
+
+.drawing-canvas {
+	background-color: var(--drawing-backgound);
+	touch-action: none;
+}
+
+.palette-container {
+	pointer-events: none;
+	position: absolute;
+	top: 0;
+	width: 100vw;
+	display: flex;
+	justify-content: center;
+	padding: 1rem;
+}
+
+.palette-colour {
+  cursor: pointer;
+	pointer-events: auto;
+	transform: scale(1);
+	width: 2.1875rem;
+	height: 2.1875rem;
+	border-radius: 100%;
+	margin: 0 .5rem;
+	transition: transform 120ms ease-in;
+}
+
+.palette-colour:focus,
+.palette-colour:hover {
+	transform: scale(1.15);
+}
+
+.palette-colour:active {
+	transform: scale(.8);
+}
+
+.palette-colour--black {
+	background-color: var(--palette-black);
+}
+
+.palette-colour--red {
+	background-color: var(--palette-red);
+}
+
+.palette-colour--green {
+	background-color: var(--palette-green);
+}
+
+.palette-colour--blue {
+	background-color: var(--palette-blue);
+}
+
+.btn {
+	background-color: var(--button-green);
+	color: rgba(255,255,255, .9);
+	padding: .5rem 1.5rem;
+	border-radius: 9000px;
+	font-weight: 700;
+	font-size: 1.125rem;
+}
+
+.btn--outline {
+	background-color: transparent;
+	color: var(--button-green);
+	border: solid 1px var(--button-green);
+}
+
+.btn--outline:hover {
+	background-color: var(--button-green);
+	color: rgba(255,255,255, .9);
+}
+
+.drawing-done-button {
+	position:absolute; 
+	bottom: 1rem; 
+	right: 1rem;
+}

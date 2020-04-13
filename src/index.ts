@@ -32,7 +32,7 @@ const init = () => {
 			activeRender.activeDrawing = activeDrawing;
 		}
 	})
-		.resolve()
+	.resolve()
 }
 
 const loadDrawing = async (id: number) => {
@@ -47,7 +47,7 @@ const saveDrawing = async () => {
 		DrawingAPI.patch(activeDrawing)
 	}
 	else{
-		const {id} = await DrawingAPI.post(activeDrawing)
+		const { id } = await DrawingAPI.post(activeDrawing)
 		router.pause();
 		router.navigate(`drawing/${id}`);
 		router.resume();
