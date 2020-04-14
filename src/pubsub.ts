@@ -20,7 +20,7 @@ class PubSub {
 		const updatedListeners = drop<Listener<P>>(listenersForChannel, listener)
 		this.listeners.set(channel, updatedListeners)
 	}
-	publish<P = undefined>(channel: Symbol, payload: P){
+	publish<P = undefined>(channel: Symbol, payload?: P){
 		const listenersForChannel = this.listeners.get(channel) ?? []
 		listenersForChannel.forEach(listener => listener(payload))
 	}

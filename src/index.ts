@@ -4,10 +4,9 @@ import InputManager from "./InputManager";
 import Navigo from "navigo"
 import * as DrawingAPI from "./api/drawing";
 import pubsub from "./pubsub";
-import { PalleteChannel } from "./channels";
+import { PalleteChannel, NetworkErrorChannel } from "./channels";
 import { Colour } from "./interfaces";
 import { UI } from "./ui";
-
 
 let activeDrawing: Drawing;
 let activeRender: Renderer;
@@ -15,31 +14,41 @@ let router: Navigo;
 let activeUI = new UI()
 
 const init = () => {
-	router = new Navigo()
+	router = new Navigo(location.origin)
 	const canvas = document.getElementById("stage") as HTMLCanvasElement
 	activeRender = new Renderer(canvas)
 	new InputManager(canvas);
 	setupUI();
-
+	
 	router.on({
 		"drawing/:id": ({ id }) => {
-			try{
 				loadDrawing(parseInt(id))
-			}
-			catch(e){
-				console.log("Error fetching drawing id: " + id, e)
-			}
 		},
 		"drawing": () => {
 			activeDrawing = new Drawing();
 			activeRender.activeDrawing = activeDrawing;
 		}
 	})
-	.resolve()
+	
+	router
+		.notFound(
+			() => {
+				pubsub.publish(NetworkErrorChannel.NotFound)
+			},
+			{
+				leave: () => activeUI.hideActiveErrorScreen()
+			}
+		)
+
+	router.resolve()
 }
 
 const loadDrawing = async (id: number) => {
 	const loadedDrawing = await DrawingAPI.get(id)
+	if (typeof loadedDrawing === "undefined"){
+		return
+	}
+
 	activeDrawing = new Drawing(loadedDrawing.canvas.strokes);
 	activeDrawing.id = loadedDrawing.id
 	activeRender.activeDrawing = activeDrawing;

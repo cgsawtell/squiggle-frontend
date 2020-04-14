@@ -30,6 +30,7 @@ button {
 :root{
 	--drawing-backgound: #FFFFFC;
 	--button-green: #26AF3F;
+	--midnight-blue: #26256D;
 	--palette-black: #343030;
 	--palette-red: #D9392E;
 	--palette-green: #59D92E;
@@ -94,6 +95,7 @@ button {
 	border-radius: 9000px;
 	font-weight: 700;
 	font-size: 1.125rem;
+	text-decoration: none;
 }
 
 .btn--outline {
@@ -121,4 +123,31 @@ button {
 	right: 1rem;
 	top: 1rem;
 	opacity: 0;
+}
+
+.error-screen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	padding: 2rem;
+	padding-bottom: 4rem;
+	background: var(--drawing-backgound);
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+}
+
+.error-emoji {
+	font-size: 110pt;
+}
+
+.error-title {
+	text-align: center;
+	font-size: 36pt;
+	font-weight: 700;
+	margin-bottom: 2rem;
+	color: var(--midnight-blue);
 }
