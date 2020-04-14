@@ -13,9 +13,9 @@ const HexColourPalete: Record<Colour, string> = {
 export default class Renderer {
 	canvas: HTMLCanvasElement;
 	ctx: CanvasRenderingContext2D;
+	#activeDrawing: Drawing | null = null;
 	#virtualWidth: number = this.clientWidth * window.devicePixelRatio;
 	#virtualHeight: number = this.clientHeight * window.devicePixelRatio;
-	#activeDrawing: Drawing | null = null;
 	constructor( canvas: HTMLCanvasElement ) {
 		this.canvas = canvas;
 		const canvasContext = canvas.getContext('2d')
@@ -26,6 +26,7 @@ export default class Renderer {
 		this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 		this.setCanvasScale();
 
+		pubsub.subscribe<Drawing>(DrawingChannel.ChangedDrawing, this.updateActiveDrawing)
 		pubsub.subscribe<Stroke>(DrawingChannel.StrokeUpdated, this.handleStrokeUpdated)
 		window.addEventListener("resize", () => {
 			this.setCanvasScale()
@@ -64,8 +65,8 @@ export default class Renderer {
 		this.ctx.lineWidth = 3;
 		this.ctx.stroke();
 	}
-	set activeDrawing(drawing: Drawing) {
-		this.#activeDrawing = drawing
+	updateActiveDrawing(drawing: Drawing) {
+		this.#activeDrawing = drawing;
 		this.redraw();
 	}
 	redraw(){

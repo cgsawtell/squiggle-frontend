@@ -5,6 +5,7 @@ export class PenChannel {
 }
 
 export class DrawingChannel {
+	static readonly ChangedDrawing = Symbol("Drawing:ChangedDrawing");
 	static readonly StrokeUpdated = Symbol("Drawing:StrokeUpdated");
 }
 
