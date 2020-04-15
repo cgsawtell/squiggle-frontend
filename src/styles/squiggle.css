@@ -5,11 +5,15 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
+body,html {
+	margin: 0;
+	padding: 0;
+}
 
 body {
 	font-family: 'Muli', sans-serif;
-	margin: 0; 
 	position:relative;
+	background-color: fuchsia;
 }
 
 button:focus,
@@ -40,6 +44,8 @@ button {
 .drawing-canvas {
 	background-color: var(--drawing-backgound);
 	touch-action: none;
+	width: 100vw;
+	height: 100vh;
 }
 
 .palette-container {

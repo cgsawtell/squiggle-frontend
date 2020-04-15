@@ -16,8 +16,9 @@ const errorScreenIds:Record<ErrorScreen, string> = {
 export class UI {
 	activeErrorScreen?: ErrorScreen;
 	constructor(){
-		pubsub.subscribe(NetworkErrorChannel.NotFound, 
-			() => this.showErrorScreen(ErrorScreen.NotFound)
+		console.log("init ui");
+		
+		pubsub.subscribe(NetworkErrorChannel.NotFound, () => {console.log("Not found");this.showErrorScreen(ErrorScreen.NotFound)}
 		)
 	}
 	showSavingIndicator(){
@@ -29,6 +30,8 @@ export class UI {
 		savingIndicatorEl.style.opacity = "0"
 	}
 	showErrorScreen(screen: ErrorScreen){
+		console.log("Show error screen");
+		
 		const errorScreenEl = document.getElementById(errorScreenIds[screen])
 		if(errorScreenEl){
 			this.activeErrorScreen = screen;

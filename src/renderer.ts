@@ -39,12 +39,12 @@ export default class Renderer {
 		this.#virtualHeight = this.clientHeight * window.devicePixelRatio
 		this.canvas.width = this.#virtualWidth
 		this.canvas.height = this.#virtualHeight
-		this.canvas.style.width = this.clientWidth + "px"
-		this.canvas.style.height = this.clientHeight + "px"
 	}
+
 	get clientWidth (){
 		return document.documentElement.clientWidth
 	}
+	
 	get clientHeight (){
 		return document.documentElement.clientHeight
 	}

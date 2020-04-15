@@ -9,11 +9,16 @@ export default class DrawingController {
 	activeDrawing: Drawing;
 	constructor(){
 		this.activeDrawing = new Drawing();
+		this.setupUI();
+
+		document.addEventListener("DOMContentLoaded", this.setupUI);
 	}
+
 	newDrawing = () => {
 		this.activeDrawing = new Drawing();
 		pubsub.publish<Drawing>(DrawingChannel.ChangedDrawing, this.activeDrawing)
 	}
+
 	loadDrawing = async (id: number) => {
 		const loadedDrawing = await DrawingAPI.get(id)
 		if (typeof loadedDrawing === "undefined") {
@@ -43,6 +48,8 @@ export default class DrawingController {
 		const redButton = document.getElementById("red")
 		const greenButton = document.getElementById("green")
 		const blueButton = document.getElementById("blue")
+
+		console.log(saveButton)
 		if (blackButton) {
 			blackButton.addEventListener("click", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Black"))
 		}
@@ -55,7 +62,6 @@ export default class DrawingController {
 		if (blueButton) {
 			blueButton.addEventListener("click", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Blue"))
 		}
-
 
 		if (saveButton) {
 			saveButton.addEventListener("click", async () => {

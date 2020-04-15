@@ -1,6 +1,6 @@
 import pubsub from "./pubsub";
 import { PenChannel } from "./channels";
-import { MouseButtons, isTouchDevice } from "./helpers/input";
+import { MouseButtons } from "./helpers/input";
 import { Vector2 } from "./interfaces";
 
 export default class InputManager{
