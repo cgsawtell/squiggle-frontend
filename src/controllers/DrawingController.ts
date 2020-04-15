@@ -9,9 +9,12 @@ export default class DrawingController {
 	activeDrawing: Drawing;
 	constructor(){
 		this.activeDrawing = new Drawing();
-		this.setupUI();
-
-		document.addEventListener("DOMContentLoaded", this.setupUI);
+		if (document.readyState !== "loading"){
+			this.setupUI()
+		}
+		else{
+			document.addEventListener("DOMContentLoaded", this.setupUI);
+		}
 	}
 
 	newDrawing = () => {
