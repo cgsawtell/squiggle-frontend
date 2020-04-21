@@ -65,7 +65,7 @@ export default class Renderer {
 		this.ctx.lineWidth = 3;
 		this.ctx.stroke();
 	}
-	updateActiveDrawing(drawing: Drawing) {
+	updateActiveDrawing = (drawing: Drawing) => {
 		this.#activeDrawing = drawing;
 		this.redraw();
 	}
