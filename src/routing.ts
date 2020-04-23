@@ -13,7 +13,8 @@ const initRouting = () => {
 				drawingController.loadDrawing(parseInt(id))
 			},
 			"drawing": () => {
-				new DrawingController();
+				const drawingController = new DrawingController();
+				drawingController.newDrawing()
 			}
 		}
 	)

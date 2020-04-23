@@ -28,7 +28,7 @@ export default class Renderer {
 
 		pubsub.subscribe<Drawing>(DrawingChannel.ChangedDrawing, this.updateActiveDrawing)
 		pubsub.subscribe<Stroke>(DrawingChannel.StrokeUpdated, this.handleStrokeUpdated)
-		window.addEventListener("resize", () => {
+		window.addEventListener("resize", () => {		
 			this.setCanvasScale()
 			this.redraw()
 		})
@@ -67,6 +67,7 @@ export default class Renderer {
 	}
 	updateActiveDrawing = (drawing: Drawing) => {
 		this.#activeDrawing = drawing;
+		console.log("updateActiveDrawing", drawing, this.#activeDrawing);
 		this.redraw();
 	}
 	redraw(){

@@ -1,5 +1,12 @@
 import pubsub from "./pubsub";
 import { NetworkErrorChannel } from "./channels";
+import errorTemplate from "./templates/error-screen.hbs"
+
+interface ErrorScreenProps {
+	emoji: string,
+	title: string,
+	buttonText: string
+}
 
 export enum ErrorScreen {
 	NotFound,
@@ -7,10 +14,22 @@ export enum ErrorScreen {
 	Forbidden
 }
 
-const errorScreenIds:Record<ErrorScreen, string> = {
-	[ErrorScreen.NotFound]: "404-screen",
-	[ErrorScreen.ServerError]: "500-screen",
-	[ErrorScreen.Forbidden]: "403-screen",
+const errorScreenPropsLookup: Record<ErrorScreen, ErrorScreenProps> = {
+	[ErrorScreen.NotFound]: {
+		emoji: "😿",
+		title: "Sorry, you're a bit lost.",
+		buttonText: "New squiggle"
+	},
+	[ErrorScreen.ServerError]: {
+		emoji: "🙀",
+		title: "Something went wrong.",
+		buttonText: "Try Again"
+	},
+	[ErrorScreen.Forbidden]: {
+		emoji: "😾",
+		title: "You’re not supposed to be here.",
+		buttonText: "Go home"
+	},
 }
 
 export class UI {
@@ -30,22 +49,16 @@ export class UI {
 		savingIndicatorEl.style.opacity = "0"
 	}
 	showErrorScreen(screen: ErrorScreen){
-		console.log("Show error screen");
-		
-		const errorScreenEl = document.getElementById(errorScreenIds[screen])
-		if(errorScreenEl){
-			this.activeErrorScreen = screen;
-			errorScreenEl.style.display = ""
+		const errorHTML = errorTemplate<ErrorScreenProps>(errorScreenPropsLookup[screen])
+		const errorScreenRoot = document.getElementById("error-screen-root");
+		if(errorScreenRoot){
+			errorScreenRoot.innerHTML = errorHTML
 		}
 	}
 	hideActiveErrorScreen() {
-		if(typeof this.activeErrorScreen === "undefined"){
-			return
-		}
-	
-		const errorScreenEl = document.getElementById(errorScreenIds[this.activeErrorScreen])
-		if (errorScreenEl) {
-			errorScreenEl.style.display = "none"
+		const errorScreenRoot = document.getElementById("error-screen-root");
+		if (errorScreenRoot) {
+			errorScreenRoot.innerHTML = ""
 		}
 	}
 }

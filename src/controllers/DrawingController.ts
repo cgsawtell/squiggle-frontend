@@ -4,16 +4,18 @@ import router from "../routing";
 import pubsub from "../pubsub";
 import { DrawingChannel, PalleteChannel } from "../channels";
 import { Colour } from "../interfaces";
+import Renderer from "../renderer";
+import InputManager from "../InputManager";
 
 export default class DrawingController {
 	activeDrawing: Drawing;
 	constructor(){
 		this.activeDrawing = new Drawing();
 		if (document.readyState !== "loading"){
-			this.setupUI()
+			this.onDomReady()
 		}
 		else{
-			document.addEventListener("DOMContentLoaded", this.setupUI);
+			document.addEventListener("DOMContentLoaded", this.onDomReady);
 		}
 	}
 
@@ -44,8 +46,14 @@ export default class DrawingController {
 			router.resume();
 		}
 	}
+	initRendererAndInput = () => {
+		const canvas = document.getElementById("stage") as HTMLCanvasElement
+		new Renderer(canvas)
+		new InputManager(canvas);
+	}
 
-	setupUI = () => {
+	onDomReady = () => {
+		this.initRendererAndInput()
 		const saveButton = document.getElementById("save") as HTMLButtonElement
 		const blackButton = document.getElementById("black")
 		const redButton = document.getElementById("red")
