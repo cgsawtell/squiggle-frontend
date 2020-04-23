@@ -1,22 +1,22 @@
-interface EventListener<E extends Event> {
+interface EventListener<E> {
 	(evt: E): void;
 }
 type DocumentEventMapKey = keyof DocumentEventMap
-type SelectorHandlerMap = Map<string, EventListener<any>[]>
+type SelectorHandlerMap<E> = Map<string, EventListener<E>[]>
 
 
 class EventDelegator {
-	eventMap: Map<DocumentEventMapKey, SelectorHandlerMap> = new Map()
+	eventMap: Map<DocumentEventMapKey, SelectorHandlerMap<Event>> = new Map()
 
-	#handleInput = (e: Event) => {
+	#handleInput = <K extends keyof DocumentEventMap>(e: DocumentEventMap[K]) => {
 		const eventType = e.type as DocumentEventMapKey //weird typing work around
 		const selectorsForEventType = this.eventMap.get(eventType)
 		if (e.target instanceof Element && typeof selectorsForEventType !== "undefined"){
-			this.#runEventHandlers(e, selectorsForEventType)
+			this.#runEventHandlers<K>(e, selectorsForEventType)
 		}
 	}
 
-	#runEventHandlers = (e: Event, selectorsForEventType: SelectorHandlerMap) => {
+	#runEventHandlers = <K extends keyof DocumentEventMap>(e: DocumentEventMap[K], selectorsForEventType: SelectorHandlerMap<DocumentEventMap[K]>) => {
 		const targetElement = e.target as Element
 		selectorsForEventType.forEach((eventHandlers, selector) => {
 			if (targetElement.matches(selector)) {
@@ -31,8 +31,8 @@ class EventDelegator {
 		
 	}
 
-	#addListenerToType = <E extends Event>(type: DocumentEventMapKey, selector: string, handler: EventListener<E>) => {
-		const eventListenersForType = this.eventMap.get(type)
+	#addListenerToType = <K extends keyof DocumentEventMap>(type: DocumentEventMapKey, selector: string, handler: EventListener<DocumentEventMap[K]>) => {
+		const eventListenersForType = this.eventMap.get(type) as SelectorHandlerMap<DocumentEventMap[K]>
 		if (typeof eventListenersForType === "undefined"){
 			return
 		}
@@ -45,7 +45,7 @@ class EventDelegator {
 			eventListenersForType.set(selector, [handler])
 		}
 	}
-	addEventListener = <E extends Event>(type: DocumentEventMapKey, selector: string, handler: EventListener<E>) => {
+	addEventListener = <K extends keyof DocumentEventMap>(type: K, selector: string, handler: EventListener<DocumentEventMap[K]>) => {
 		if (!this.eventMap.has(type)){
 			this.eventMap.set(type, new Map())
 			document.addEventListener(type, this.#handleInput)
