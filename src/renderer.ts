@@ -2,6 +2,7 @@ import { Vector2, Stroke, Colour } from "./interfaces";
 import Drawing from "./drawing";
 import pubsub from "./pubsub";
 import { DrawingChannel } from "./channels";
+import { documentReady } from "./helpers/load";
 
 const HexColourPalete: Record<Colour, string> = {
 	"Black": "#343030",
@@ -11,30 +12,40 @@ const HexColourPalete: Record<Colour, string> = {
 }
 
 export default class Renderer {
-	canvas: HTMLCanvasElement;
-	ctx: CanvasRenderingContext2D;
+	canvas: HTMLCanvasElement | null = null;
+	ctx: CanvasRenderingContext2D | null = null;
 	#activeDrawing: Drawing | null = null;
 	#virtualWidth: number = this.clientWidth * window.devicePixelRatio;
 	#virtualHeight: number = this.clientHeight * window.devicePixelRatio;
-	constructor( canvas: HTMLCanvasElement ) {
-		this.canvas = canvas;
-		const canvasContext = canvas.getContext('2d')
+	constructor() {
+		pubsub.subscribe<Drawing>(DrawingChannel.ChangedDrawing, this.updateActiveDrawing)
+		pubsub.subscribe<Stroke>(DrawingChannel.StrokeUpdated, this.handleStrokeUpdated)
+
+		documentReady(this.initCanvas);
+		window.addEventListener("resize", this.onWindowResize)
+	}
+
+	onWindowResize = () => {
+		this.setCanvasScale()
+		this.redraw()
+	}
+
+	initCanvas = () => {
+		this.canvas = document.getElementById("stage") as HTMLCanvasElement;
+		const canvasContext = this.canvas.getContext('2d')
 		if (canvasContext === null) {
 			throw new Error("Unable to find 2d context")
 		}
 		this.ctx = canvasContext;
 		this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 		this.setCanvasScale();
-
-		pubsub.subscribe<Drawing>(DrawingChannel.ChangedDrawing, this.updateActiveDrawing)
-		pubsub.subscribe<Stroke>(DrawingChannel.StrokeUpdated, this.handleStrokeUpdated)
-		window.addEventListener("resize", () => {		
-			this.setCanvasScale()
-			this.redraw()
-		})
 	}
-	
+
 	setCanvasScale = () => {
+		if(this.canvas === null){
+			return
+		}
+
 		this.#virtualWidth = this.clientWidth * window.devicePixelRatio
 		this.#virtualHeight = this.clientHeight * window.devicePixelRatio
 		this.canvas.width = this.#virtualWidth
@@ -56,6 +67,9 @@ export default class Renderer {
 	}
 
 	drawLineSegment(startPosition: Vector2, endPosition: Vector2, ratio: number, colour: Colour){
+		if(this.ctx === null){
+			return
+		}
 		const startCoord = this.strokeCoordToPixel(startPosition, ratio)
 		const endCoord = this.strokeCoordToPixel(endPosition, ratio)
 		this.ctx.strokeStyle = HexColourPalete[colour]
@@ -67,13 +81,13 @@ export default class Renderer {
 	}
 	updateActiveDrawing = (drawing: Drawing) => {
 		this.#activeDrawing = drawing;
-		console.log("updateActiveDrawing", drawing, this.#activeDrawing);
 		this.redraw();
 	}
 	redraw(){
-		if(this.#activeDrawing === null){
+		if (this.#activeDrawing === null || this.canvas === null || this.ctx === null){
 			return
 		}
+		
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 		this.#activeDrawing.canvas.strokes.forEach((stroke:Stroke) => { this.drawStroke(stroke) })
 	}

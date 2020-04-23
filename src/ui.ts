@@ -35,9 +35,7 @@ const errorScreenPropsLookup: Record<ErrorScreen, ErrorScreenProps> = {
 export class UI {
 	activeErrorScreen?: ErrorScreen;
 	constructor(){
-		console.log("init ui");
-		
-		pubsub.subscribe(NetworkErrorChannel.NotFound, () => {console.log("Not found");this.showErrorScreen(ErrorScreen.NotFound)}
+		pubsub.subscribe(NetworkErrorChannel.NotFound, () => {this.showErrorScreen(ErrorScreen.NotFound)}
 		)
 	}
 	showSavingIndicator(){

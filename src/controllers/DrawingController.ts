@@ -6,17 +6,14 @@ import { DrawingChannel, PalleteChannel } from "../channels";
 import { Colour } from "../interfaces";
 import Renderer from "../renderer";
 import InputManager from "../InputManager";
+import EventDelegator from "../EventDelegator";
 
 export default class DrawingController {
 	activeDrawing: Drawing;
 	constructor(){
 		this.activeDrawing = new Drawing();
-		if (document.readyState !== "loading"){
-			this.onDomReady()
-		}
-		else{
-			document.addEventListener("DOMContentLoaded", this.onDomReady);
-		}
+		this.setupUIListeners()
+		this.initRendererAndInput()
 	}
 
 	newDrawing = () => {
@@ -46,40 +43,23 @@ export default class DrawingController {
 			router.resume();
 		}
 	}
+	
 	initRendererAndInput = () => {
-		const canvas = document.getElementById("stage") as HTMLCanvasElement
-		new Renderer(canvas)
-		new InputManager(canvas);
+		new Renderer()
+		new InputManager();
 	}
 
-	onDomReady = () => {
-		this.initRendererAndInput()
-		const saveButton = document.getElementById("save") as HTMLButtonElement
-		const blackButton = document.getElementById("black")
-		const redButton = document.getElementById("red")
-		const greenButton = document.getElementById("green")
-		const blueButton = document.getElementById("blue")
+	setupUIListeners = () => {
+		EventDelegator.addEventListener("click", "#black", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Black"))
+		EventDelegator.addEventListener("click", "#red", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Red"))
+		EventDelegator.addEventListener("click", "#green", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Green"))
+		EventDelegator.addEventListener("click", "#blue", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Blue"))
 
-		console.log(saveButton)
-		if (blackButton) {
-			blackButton.addEventListener("click", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Black"))
-		}
-		if (redButton) {
-			redButton.addEventListener("click", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Red"))
-		}
-		if (greenButton) {
-			greenButton.addEventListener("click", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Green"))
-		}
-		if (blueButton) {
-			blueButton.addEventListener("click", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Blue"))
-		}
-
-		if (saveButton) {
-			saveButton.addEventListener("click", async () => {
-				saveButton.disabled = true;
-				await this.saveDrawing();
-				saveButton.disabled = false;
-			})
-		}
+		EventDelegator.addEventListener("click", "#save", async (e: MouseEvent) => {
+			const saveButton = <HTMLButtonElement>e.target
+			saveButton.disabled = true;
+			await this.saveDrawing();
+			saveButton.disabled = false;
+		})
 	}
 }

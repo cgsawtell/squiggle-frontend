@@ -2,16 +2,19 @@ import pubsub from "./pubsub";
 import { PenChannel } from "./channels";
 import { MouseButtons } from "./helpers/input";
 import { Vector2 } from "./interfaces";
+import EventDelegator from "./EventDelegator";
 
 export default class InputManager{
 	isPointerDown: boolean = false;
-	constructor(canvas: HTMLCanvasElement) {
-			canvas.addEventListener("touchstart", this.handleInputStart)
-			document.addEventListener("touchend", this.handleInputEnd)
-			canvas.addEventListener("touchmove", this.handleInputMove)
-			canvas.addEventListener("mousedown", this.handleInputStart)
-			document.addEventListener("mouseup", this.handleInputEnd)
-			canvas.addEventListener("mousemove", this.handleInputMove)
+	constructor() {
+		EventDelegator.addEventListener("touchstart", "#stage", this.handleInputStart)
+		EventDelegator.addEventListener("mousedown", "#stage",  this.handleInputStart)
+
+		EventDelegator.addEventListener("touchend", "document", this.handleInputEnd)
+		EventDelegator.addEventListener("mouseup", "document", this.handleInputEnd)
+
+		EventDelegator.addEventListener("touchmove", "#stage", this.handleInputMove)
+		EventDelegator.addEventListener("mousemove", "#stage", this.handleInputMove)
 	}
 	handleInputStart = (e:MouseEvent | TouchEvent) => {
 		//On desktop we need to make sure the context menu wasn't just opened
