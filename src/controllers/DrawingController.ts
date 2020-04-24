@@ -7,13 +7,23 @@ import { Colour } from "../interfaces";
 import Renderer from "../renderer";
 import InputManager from "../InputManager";
 import EventDelegator from "../EventDelegator";
+import drawingScreenTemplate from "../templates/drawing-screen.hbs"
+import { renderTemplateTo } from "../helpers/handlebars";
+import { documentReady } from "../helpers/load";
 
 export default class DrawingController {
 	activeDrawing: Drawing;
 	constructor(){
 		this.activeDrawing = new Drawing();
 		this.setupUIListeners()
-		this.initRendererAndInput()
+		
+		const renderer = new Renderer()
+		new InputManager();
+
+		documentReady(() => {
+			renderTemplateTo(drawingScreenTemplate, {}, "app-root")
+			renderer.initCanvas()
+		});
 	}
 
 	newDrawing = () => {
@@ -42,11 +52,6 @@ export default class DrawingController {
 			router.navigate(`drawing/${id}`);
 			router.resume();
 		}
-	}
-	
-	initRendererAndInput = () => {
-		new Renderer()
-		new InputManager();
 	}
 
 	setupUIListeners = () => {

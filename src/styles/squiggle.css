@@ -13,7 +13,7 @@ body,html {
 body {
 	font-family: 'Muli', sans-serif;
 	position:relative;
-	background-color: fuchsia;
+	/* background-color: fuchsia; */
 }
 
 button:focus,

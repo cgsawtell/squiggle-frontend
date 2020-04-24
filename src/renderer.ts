@@ -21,7 +21,6 @@ export default class Renderer {
 		pubsub.subscribe<Drawing>(DrawingChannel.ChangedDrawing, this.updateActiveDrawing)
 		pubsub.subscribe<Stroke>(DrawingChannel.StrokeUpdated, this.handleStrokeUpdated)
 
-		documentReady(this.initCanvas);
 		window.addEventListener("resize", this.onWindowResize)
 	}
 

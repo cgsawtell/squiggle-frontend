@@ -1,4 +1,4 @@
-
+type TemplateFunction<P = {}> = (param?: P) => string;
 declare module "*.hbs" {
 	const templateFunction: <P>(param?: P) => string;
 	export default templateFunction;

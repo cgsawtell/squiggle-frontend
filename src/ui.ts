@@ -1,6 +1,7 @@
 import pubsub from "./pubsub";
 import { NetworkErrorChannel } from "./channels";
 import errorTemplate from "./templates/error-screen.hbs"
+import { renderTemplateTo } from "./helpers/handlebars";
 
 interface ErrorScreenProps {
 	emoji: string,
@@ -47,11 +48,7 @@ export class UI {
 		savingIndicatorEl.style.opacity = "0"
 	}
 	showErrorScreen(screen: ErrorScreen){
-		const errorHTML = errorTemplate<ErrorScreenProps>(errorScreenPropsLookup[screen])
-		const errorScreenRoot = document.getElementById("error-screen-root");
-		if(errorScreenRoot){
-			errorScreenRoot.innerHTML = errorHTML
-		}
+		renderTemplateTo(errorTemplate, errorScreenPropsLookup[screen], "error-screen-root")
 	}
 	hideActiveErrorScreen() {
 		const errorScreenRoot = document.getElementById("error-screen-root");
