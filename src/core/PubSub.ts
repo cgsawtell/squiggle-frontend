@@ -1,4 +1,4 @@
-import { drop } from "./helpers/array"
+import { drop } from "../helpers/array"
 
 type Listener<Payload> = (payload:Payload) => void
 

@@ -1,6 +1,6 @@
 import { Vector2, Stroke, Colour } from "./interfaces";
 import Drawing from "./drawing";
-import pubsub from "./pubsub";
+import pubsub from "./core/pubsub";
 import { DrawingChannel } from "./channels";
 import { documentReady } from "./helpers/load";
 

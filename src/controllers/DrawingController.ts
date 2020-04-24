@@ -1,12 +1,13 @@
+import pubsub from "../core/pubsub";
+import EventDelegator from "../core/EventDelegator";
+
 import Drawing from "../drawing";
 import * as DrawingAPI from "../api/drawing";
 import router from "../routing";
-import pubsub from "../pubsub";
 import { DrawingChannel, PalleteChannel } from "../channels";
 import { Colour } from "../interfaces";
 import Renderer from "../renderer";
 import InputManager from "../InputManager";
-import EventDelegator from "../EventDelegator";
 import drawingScreenTemplate from "../templates/drawing-screen.hbs"
 import { renderTemplateTo } from "../helpers/handlebars";
 import { documentReady } from "../helpers/load";
@@ -16,7 +17,7 @@ export default class DrawingController {
 	constructor(){
 		this.activeDrawing = new Drawing();
 		this.setupUIListeners()
-		
+
 		const renderer = new Renderer()
 		new InputManager();
 
@@ -54,17 +55,23 @@ export default class DrawingController {
 		}
 	}
 
+	onSaveClick = async (e: MouseEvent) => {
+		const saveButton = <HTMLButtonElement>e.target
+		saveButton.disabled = true;
+		await this.saveDrawing();
+		saveButton.disabled = false;
+	}
+
 	setupUIListeners = () => {
 		EventDelegator.addEventListener("click", "#black", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Black"))
 		EventDelegator.addEventListener("click", "#red", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Red"))
 		EventDelegator.addEventListener("click", "#green", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Green"))
 		EventDelegator.addEventListener("click", "#blue", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Blue"))
 
-		EventDelegator.addEventListener("click", "#save", async (e: MouseEvent) => {
-			const saveButton = <HTMLButtonElement>e.target
-			saveButton.disabled = true;
-			await this.saveDrawing();
-			saveButton.disabled = false;
-		})
+		EventDelegator.addEventListener("click", "#save", this.onSaveClick)
+	}
+
+	cleanup = () => {
+
 	}
 }

@@ -1,5 +1,5 @@
 import Navigo from "navigo"
-import pubsub from "./pubsub";
+import pubsub from "./core/pubsub";
 import { NetworkErrorChannel } from "./channels";
 import DrawingController from "./controllers/DrawingController";
 

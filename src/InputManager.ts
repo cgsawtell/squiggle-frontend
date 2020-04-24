@@ -1,8 +1,8 @@
-import pubsub from "./pubsub";
+import pubsub from "./core/pubsub";
 import { PenChannel } from "./channels";
 import { MouseButtons } from "./helpers/input";
 import { Vector2 } from "./interfaces";
-import EventDelegator from "./EventDelegator";
+import EventDelegator from "./core/EventDelegator";
 
 export default class InputManager{
 	isPointerDown: boolean = false;
