@@ -1,0 +1,24 @@
+{{log errors}}
+<form id="signup-form">
+	<label for="firstName">First Name</label>
+	<input type="text" name="firstName" id="firstName" autocomplete="given-name" value="{{values.firstName}}" required/>
+	{{#if errors.firstName}}
+		<div>{{errors.firstName}}</div>
+	{{/if}}
+	<label for="lastName">Last Name</label>
+	<input type="text" name="lastName" id="lastName" autocomplete="family-name" value="{{values.lastName}}" required/>
+	{{#if errors.lastName}}
+		<div>{{errors.lastName}}</div>
+	{{/if}}
+	<label for="email">Email</label>
+	<input type="email" name="email" id="email" autocomplete="email" value="{{values.email}}" required/>
+	{{#if errors.email}}
+		<div>{{errors.email}}</div>
+	{{/if}}
+	<label for="password">Password</label>
+	<input type="password" name="password" id="password" autocomplete="new-password" value="{{values.password}}" required/>
+	{{#if errors.password}}
+		<div>{{errors.password}}</div>
+	{{/if}}
+	<input type="submit" value="Sign up" />
+</form>

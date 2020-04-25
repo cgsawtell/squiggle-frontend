@@ -2,6 +2,7 @@ import Navigo from "navigo"
 import pubsub from "./core/pubsub";
 import { NetworkErrorChannel } from "./channels";
 import DrawingController from "./controllers/DrawingController";
+import SignUpController from "./controllers/SignUpController";
 
 const router = new Navigo(location.origin)
 
@@ -15,17 +16,15 @@ const initRouting = () => {
 			"drawing": () => {
 				const drawingController = new DrawingController();
 				drawingController.newDrawing()
+			},
+			"sign-up": () => {
+				const signupController = new SignUpController();
 			}
 		}
 	)
 	
 	router
-		.notFound(
-			() => {
-				console.log("404");
-				pubsub.publish(NetworkErrorChannel.NotFound)
-			}
-		)
+		.notFound( () => pubsub.publish(NetworkErrorChannel.NotFound)	)
 	
 	router.resolve()
 }

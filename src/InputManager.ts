@@ -4,7 +4,7 @@ import { MouseButtons } from "./helpers/input";
 import { Vector2 } from "./interfaces";
 import EventDelegator from "./core/EventDelegator";
 
-export default class InputManager{
+class InputManager{
 	isPointerDown: boolean = false;
 	constructor() {
 		EventDelegator.addEventListener("touchstart", "#stage", this.handleInputStart)
@@ -18,7 +18,10 @@ export default class InputManager{
 	}
 	handleInputStart = (e:MouseEvent | TouchEvent) => {
 		//On desktop we need to make sure the context menu wasn't just opened
-		const shouldStartDrawing = "touches" in e ? true : e.button === MouseButtons.Left && !e.ctrlKey
+		const shouldStartDrawing = "touches" in e 
+			? true 
+			: e.button === MouseButtons.Left && !e.ctrlKey
+			
 		if (shouldStartDrawing){
 			this.isPointerDown = true;
 			pubsub.publish<Vector2>(PenChannel.Down, this.createPenPosition(e))
@@ -45,3 +48,5 @@ export default class InputManager{
 		)
 	}
 }
+
+export default InputManager;

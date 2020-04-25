@@ -1,6 +1,5 @@
 import pubsub from "../core/pubsub";
 import EventDelegator from "../core/EventDelegator";
-
 import Drawing from "../drawing";
 import * as DrawingAPI from "../api/drawing";
 import router from "../routing";
@@ -72,6 +71,6 @@ export default class DrawingController {
 	}
 
 	cleanup = () => {
-
+		EventDelegator.removeEventListener("click", "#save", this.onSaveClick)
 	}
 }
