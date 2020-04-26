@@ -3,6 +3,7 @@ import { documentReady } from "../helpers/load";
 import { renderTemplateTo } from "../helpers/handlebars";
 import EventDelegator from "../core/EventDelegator";
 import * as UserAPI from "../api/user";
+import router from "../routing";
 
 interface SignupScreenProps {
 
@@ -42,6 +43,7 @@ export default class SignUpController {
 			if (typeof newUserResponse === "undefined"){
 				return
 			}
+			router.navigate(`drawing/`);
 		} catch (unhandledError) {
 			console.log("unhandledError: ", unhandledError);
 		}

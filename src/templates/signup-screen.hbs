@@ -1,24 +1,26 @@
-{{log errors}}
-<form id="signup-form">
-	<label for="firstName">First Name</label>
-	<input type="text" name="firstName" id="firstName" autocomplete="given-name" value="{{values.firstName}}" required/>
-	{{#if errors.firstName}}
-		<div>{{errors.firstName}}</div>
-	{{/if}}
-	<label for="lastName">Last Name</label>
-	<input type="text" name="lastName" id="lastName" autocomplete="family-name" value="{{values.lastName}}" required/>
-	{{#if errors.lastName}}
-		<div>{{errors.lastName}}</div>
-	{{/if}}
-	<label for="email">Email</label>
-	<input type="email" name="email" id="email" autocomplete="email" value="{{values.email}}" required/>
-	{{#if errors.email}}
-		<div>{{errors.email}}</div>
-	{{/if}}
-	<label for="password">Password</label>
-	<input type="password" name="password" id="password" autocomplete="new-password" value="{{values.password}}" required/>
-	{{#if errors.password}}
-		<div>{{errors.password}}</div>
-	{{/if}}
-	<input type="submit" value="Sign up" />
-</form>
+<div class="sign-up-form-page">
+	<h1>Create Account</h1>
+	<form class="sign-up-form" id="signup-form">
+		<label class="form-label" for="firstName">First name</label>
+		<input class="form-field {{#if errors.firstName}}form-field--with-error{{/if}}" type="text" name="firstName" id="firstName" autocomplete="given-name" value="{{values.firstName}}" spellcheck="false" required/>
+		{{#if errors.firstName}}
+			<div class="form-error">{{errors.firstName}}</div>
+		{{/if}}
+		<label class="form-label" for="lastName">Last name</label>
+		<input class="form-field {{#if errors.lastName}}form-field--with-error{{/if}}" type="text" name="lastName" id="lastName" autocomplete="family-name" value="{{values.lastName}}" spellcheck="false" required/>
+		{{#if errors.lastName}}
+			<div class="form-error">{{errors.lastName}}</div>
+		{{/if}}
+		<label class="form-label" for="email">Email</label>
+		<input class="form-field {{#if errors.email}}form-field--with-error{{/if}}" type="email" name="email" id="email" autocomplete="email" value="{{values.email}}" required spellcheck="false"/>
+		{{#if errors.email}}
+			<div class="form-error">{{errors.email}}</div>
+		{{/if}}
+		<label class="form-label" for="password">Password</label>
+		<input class="form-field {{#if errors.password}}form-field--with-error{{/if}}" type="password" name="password" id="password" autocomplete="new-password" value="{{values.password}}" spellcheck="false" required/>
+		{{#if errors.password}}
+			<div class="form-error">{{errors.password}}</div>
+		{{/if}}
+		<input type="submit" class="btn" value="Create my account" />
+	</form>
+</div>
