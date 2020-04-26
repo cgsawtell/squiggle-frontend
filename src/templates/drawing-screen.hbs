@@ -1,6 +1,14 @@
 <div class="saving-indicator">
 	Saving
 </div>
+<div class="tool-container">
+	<div class="tool {{#isEq activeTool 0}}tool--selected{{/isEq}}" id="tool-pencil">
+		<img class="tool-icon" src={{icons.pencil}} />
+	</div>
+	<div class="tool {{#isEq activeTool 1}}tool--selected{{/isEq}}" id="tool-eraser">
+		<img class="tool-icon" src={{icons.eraser}} />
+	</div>
+</div>
 <div class="palette-container">
 	<div id="black" class="palette-colour palette-colour--selected palette-colour--black"></div>
 	<div id="red" class="palette-colour palette-colour--red"></div>

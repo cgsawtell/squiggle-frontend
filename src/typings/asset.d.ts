@@ -9,4 +9,7 @@ declare module "*.handlebars" {
 	export default templateFunction;
 }
 
-declare module '*.svg'
+declare module '*.svg' {
+	const assetURL: string
+	export default assetURL
+}

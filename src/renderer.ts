@@ -1,8 +1,7 @@
-import { Vector2, Stroke, Colour } from "./interfaces";
+import { Vector2, Stroke, Colour, Tool } from "./interfaces";
 import Drawing from "./drawing";
 import pubsub from "./core/pubsub";
 import { DrawingChannel } from "./channels";
-import { documentReady } from "./helpers/load";
 
 const HexColourPalete: Record<Colour, string> = {
 	"Black": "#343030",
@@ -39,7 +38,6 @@ export default class Renderer {
 		this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 		this.setCanvasScale();
 	}
-
 	setCanvasScale = () => {
 		if(this.canvas === null){
 			return
@@ -62,20 +60,30 @@ export default class Renderer {
 		const strokeSegments = updatedStroke.segments
 		const previousPenPosition = strokeSegments[strokeSegments.length - 2]
 		const newPenPosition = strokeSegments[strokeSegments.length - 1]
-		this.drawLineSegment(previousPenPosition, newPenPosition, updatedStroke.ratio, updatedStroke.colour)
+		this.drawLineSegment(previousPenPosition, newPenPosition, updatedStroke)
 	}
 
-	drawLineSegment(startPosition: Vector2, endPosition: Vector2, ratio: number, colour: Colour){
+	drawLineSegment(startPosition: Vector2, endPosition: Vector2, stroke: Stroke){
 		if(this.ctx === null){
 			return
 		}
-		const startCoord = this.strokeCoordToPixel(startPosition, ratio)
-		const endCoord = this.strokeCoordToPixel(endPosition, ratio)
-		this.ctx.strokeStyle = HexColourPalete[colour]
+		const startCoord = this.strokeCoordToPixel(startPosition, stroke.ratio)
+		const endCoord = this.strokeCoordToPixel(endPosition, stroke.ratio)
+
+		if(stroke.mode === Tool.Pencil){
+			this.ctx.strokeStyle = HexColourPalete[stroke.colour]
+			this.ctx.lineWidth = 3;
+		}
+
+		if(stroke.mode === Tool.Eraser){
+			this.ctx.strokeStyle = "#FFFFFC";
+			this.ctx.lineWidth = 10;
+
+		}
+
 		this.ctx.beginPath();
 		this.ctx.moveTo(startCoord[0], startCoord[1]);
 		this.ctx.lineTo(endCoord[0], endCoord[1]);
-		this.ctx.lineWidth = 3;
 		this.ctx.stroke();
 	}
 	updateActiveDrawing = (drawing: Drawing) => {
@@ -84,6 +92,8 @@ export default class Renderer {
 	}
 	redraw(){
 		if (this.#activeDrawing === null || this.canvas === null || this.ctx === null){
+			console.log(this.#activeDrawing, this.canvas, this.ctx );
+			
 			return
 		}
 		
@@ -94,7 +104,7 @@ export default class Renderer {
 		stroke.segments.forEach((position, i) => {
 			if (i < stroke.segments.length - 1) {
 				const nextPosition = stroke.segments[i + 1]
-				this.drawLineSegment(nextPosition, position, stroke.ratio, stroke.colour)
+				this.drawLineSegment(nextPosition, position, stroke)
 			}
 		})
 	}

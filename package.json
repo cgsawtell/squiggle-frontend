@@ -13,6 +13,7 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@types/navigo": "^7.0.1",
+		"@types/handlebars": "^4.1.0",
 		"babel-core": "^6.26.3",
 		"babel-preset-env": "^1.7.0",
 		"http-proxy": "^1.18.0",
@@ -22,6 +23,8 @@
 		"typescript": "^3.8.3"
 	},
 	"dependencies": {
+		"diff-dom": "^4.1.6",
+		"handlebars": "^4.7.6",
 		"navigo": "^7.1.2",
 		"wretch": "^1.7.1"
 	}

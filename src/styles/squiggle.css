@@ -41,12 +41,15 @@ input{
 }
 :root{
 	--drawing-backgound: #FFFFFC;
-	--button-green: #26AF3F;
-	--midnight-blue: #26256D;
 	--palette-black: #343030;
 	--palette-red: #D9392E;
 	--palette-green: #59D92E;
 	--palette-blue: #2E7DD9;
+	--grass-green: #26AF3F;
+	--midnight-blue: #26256D;
+	--silver: #c5c5c5;
+	--cloud: #eae9e9;
+	--dove:#f5f4f4;
 	--input-border-radius: .25rem;
 }
 
@@ -111,7 +114,7 @@ input{
 }
 
 .form-field {
-	border: solid 1px #c5c5c5;
+	border: solid 1px var(--silver);
 	padding: .5rem;
 	border-radius: var(--input-border-radius);
 	font-size: 1.125rem;
@@ -141,8 +144,8 @@ input{
 }
 
 .btn {
-	background-color: var(--button-green);
-	border: solid 1px var(--button-green);
+	background-color: var(--grass-green);
+	border: solid 1px var(--grass-green);
 	color: rgba(255,255,255, .9);
 	padding: .5rem 1.5rem;
 	border-radius: var(--input-border-radius);
@@ -158,12 +161,12 @@ input{
 
 .btn--outline {
 	background-color: transparent;
-	color: var(--button-green);
+	color: var(--grass-green);
 }
 
 .btn--outline:focus,
 .btn--outline:hover {
-	background-color: var(--button-green);
+	background-color: var(--grass-green);
 	color: rgba(255,255,255, .9);
 }
 
@@ -220,4 +223,40 @@ input{
 	flex-direction: column;
 	max-width: 30rem;
 	width: 100%;
+}
+
+.tool-container {
+	position: absolute;
+	padding: 1rem;
+	pointer-events: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+}
+
+.tool {
+	pointer-events: initial;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 2.5rem;
+	height: 2.5rem;
+	cursor: pointer;
+	margin-bottom: .5rem;
+}
+
+.tool:hover {
+	background-color: var(--dove);
+}
+
+.tool--selected:hover,
+.tool--selected {
+	background-color: var(--cloud);
+	cursor: auto;
+}
+
+.tool-icon {
+	pointer-events: none;
 }

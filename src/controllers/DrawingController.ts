@@ -3,29 +3,51 @@ import EventDelegator from "../core/EventDelegator";
 import Drawing from "../drawing";
 import * as DrawingAPI from "../api/drawing";
 import router from "../routing";
+import {withState} from "../helpers/state"
 import { DrawingChannel, PalleteChannel } from "../channels";
-import { Colour } from "../interfaces";
+import { Colour, Tool } from "../interfaces";
 import Renderer from "../renderer";
 import InputManager from "../InputManager";
 import drawingScreenTemplate from "../templates/drawing-screen.hbs"
 import { renderTemplateTo } from "../helpers/handlebars";
 import { documentReady } from "../helpers/load";
+import eraser from "../../assets/eraser.svg"
+import pencil from "../../assets/pencil.svg"
+
+interface DrawingControllerState {
+	activeTool: Tool,
+	activeColour: Colour,
+	icons:Record<string, string>
+}
+
+const initialState: DrawingControllerState = {
+	activeTool: Tool.Pencil,
+	activeColour: "Black",
+	icons: { eraser, pencil }
+}
 
 export default class DrawingController {
 	activeDrawing: Drawing;
+	state: DrawingControllerState;
+	renderer: Renderer;
 	constructor(){
+		this.state = withState(initialState, this.rerender)
 		this.activeDrawing = new Drawing();
 		this.setupUIListeners()
-
-		const renderer = new Renderer()
 		new InputManager();
-
-		documentReady(() => {
-			renderTemplateTo(drawingScreenTemplate, {}, "app-root")
-			renderer.initCanvas()
-		});
+		
+		this.renderer = new Renderer()
+		documentReady(this.render);
 	}
-
+	render = () => {
+		renderTemplateTo(drawingScreenTemplate, this.state, "app-root");
+		this.renderer.initCanvas();
+	}
+	rerender = () => {
+		renderTemplateTo(drawingScreenTemplate, this.state, "app-root");
+		this.renderer.initCanvas();
+		this.renderer.redraw();
+}
 	newDrawing = () => {
 		this.activeDrawing = new Drawing();
 		pubsub.publish<Drawing>(DrawingChannel.ChangedDrawing, this.activeDrawing)
@@ -60,8 +82,18 @@ export default class DrawingController {
 		await this.saveDrawing();
 		saveButton.disabled = false;
 	}
-
+	handleToolChangePencil = () => {
+		this.state.activeTool = Tool.Pencil
+		pubsub.publish<Tool>(DrawingChannel.ToolChanged, this.state.activeTool )
+	}
+	handleToolChangeEraser = () => {
+		this.state.activeTool = Tool.Eraser
+		pubsub.publish<Tool>(DrawingChannel.ToolChanged, this.state.activeTool )
+	}
 	setupUIListeners = () => {
+		EventDelegator.addEventListener("click", "#tool-pencil", this.handleToolChangePencil)
+		EventDelegator.addEventListener("click", "#tool-eraser", this.handleToolChangeEraser)
+
 		EventDelegator.addEventListener("click", "#black", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Black"))
 		EventDelegator.addEventListener("click", "#red", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Red"))
 		EventDelegator.addEventListener("click", "#green", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Green"))
