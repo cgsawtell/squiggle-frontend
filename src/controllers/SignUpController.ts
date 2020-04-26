@@ -4,19 +4,28 @@ import { renderTemplateTo } from "../helpers/handlebars";
 import EventDelegator from "../core/EventDelegator";
 import * as UserAPI from "../api/user";
 import router from "../routing";
+import { withState } from "../helpers/state";
 
-interface SignupScreenProps {
+interface SignupScreenState {
+	values: Partial<Record<keyof UserAPI.NewUserPayload, string>>,
+	errors: Partial<Record<keyof UserAPI.NewUserPayload, string>>
 
 }
 
+const initialState = {
+	values: {},
+	errors: {}
+}
+
 export default class SignUpController {
+	state: SignupScreenState;
 	constructor(){
-		documentReady(
-			() => {
-				renderTemplateTo<SignupScreenProps>(signupScreenTemplate, {errors:{}}, "app-root")
-			}
-		)
+		this.state = withState<SignupScreenState>(initialState, this.render)
+		documentReady( this.render )
 		EventDelegator.addEventListener("submit", "#signup-form", this.onFormSubmit)
+	}
+	render = () => {
+		renderTemplateTo<SignupScreenState>(signupScreenTemplate, this.state, "app-root");
 	}
 	convertFormDataToObject(formData: FormData): UserAPI.NewUserPayload{
 		const formDataEntries = formData.entries()
@@ -25,7 +34,8 @@ export default class SignUpController {
 		return formDataAsObject as UserAPI.NewUserPayload
 	}
 	onFormValidationErrors = ({ errors }: UserAPI.NewUserValidationErrorResponse, formValues: UserAPI.NewUserPayload) => {
-		renderTemplateTo<SignupScreenProps>(signupScreenTemplate, { errors, values: formValues }, "app-root")
+		this.state.values = formValues
+		this.state.errors = errors
 	}
 	onFormSubmit = async (e:Event) => {
 		e.preventDefault()
