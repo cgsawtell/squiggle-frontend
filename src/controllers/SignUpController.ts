@@ -25,7 +25,6 @@ export default class SignUpController {
 		return formDataAsObject as UserAPI.NewUserPayload
 	}
 	onFormValidationErrors = ({ errors }: UserAPI.NewUserValidationErrorResponse, formValues: UserAPI.NewUserPayload) => {
-		console.log(errors);
 		renderTemplateTo<SignupScreenProps>(signupScreenTemplate, { errors, values: formValues }, "app-root")
 	}
 	onFormSubmit = async (e:Event) => {
