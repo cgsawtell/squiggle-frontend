@@ -1,6 +1,6 @@
 import {Stroke, Vector2, Colour, Tool} from "./interfaces";
 import pubsub from "./core/pubsub";
-import { PenChannel, DrawingChannel, PalleteChannel } from "./channels";
+import { PenChannel, DrawingChannel } from "./channels";
 
 interface DrawingCanvas {
 	strokes: Stroke[];
@@ -17,7 +17,7 @@ export default class Drawing {
 		this.canvas.strokes = strokes;
 		pubsub.subscribe<Vector2>(PenChannel.Move, this.handlePenMove);
 		pubsub.subscribe<Vector2>(PenChannel.Down, this.handlePenDown);
-		pubsub.subscribe<Colour>(PalleteChannel.ColourChange, this.handleColourChange)
+		pubsub.subscribe<Colour>(DrawingChannel.ColourChange, this.handleColourChange)
 		pubsub.subscribe<Tool>(DrawingChannel.ToolChanged, this.handleToolChange)
 	}
 	

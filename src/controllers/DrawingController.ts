@@ -3,8 +3,8 @@ import EventDelegator from "../core/EventDelegator";
 import Drawing from "../drawing";
 import * as DrawingAPI from "../api/drawing";
 import router from "../routing";
-import {withState} from "../helpers/state"
-import { DrawingChannel, PalleteChannel } from "../channels";
+import { withState } from "../helpers/state"
+import { DrawingChannel } from "../channels";
 import { Colour, Tool } from "../interfaces";
 import Renderer from "../renderer";
 import InputManager from "../InputManager";
@@ -94,10 +94,10 @@ export default class DrawingController {
 		EventDelegator.addEventListener("click", "#tool-pencil", this.handleToolChangePencil)
 		EventDelegator.addEventListener("click", "#tool-eraser", this.handleToolChangeEraser)
 
-		EventDelegator.addEventListener("click", "#black", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Black"))
-		EventDelegator.addEventListener("click", "#red", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Red"))
-		EventDelegator.addEventListener("click", "#green", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Green"))
-		EventDelegator.addEventListener("click", "#blue", () => pubsub.publish<Colour>(PalleteChannel.ColourChange, "Blue"))
+		EventDelegator.addEventListener("click", "#black", () => pubsub.publish<Colour>(DrawingChannel.ColourChange, "Black"))
+		EventDelegator.addEventListener("click", "#red", () => pubsub.publish<Colour>(DrawingChannel.ColourChange, "Red"))
+		EventDelegator.addEventListener("click", "#green", () => pubsub.publish<Colour>(DrawingChannel.ColourChange, "Green"))
+		EventDelegator.addEventListener("click", "#blue", () => pubsub.publish<Colour>(DrawingChannel.ColourChange, "Blue"))
 
 		EventDelegator.addEventListener("click", "#save", this.onSaveClick)
 	}
