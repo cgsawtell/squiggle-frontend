@@ -1,5 +1,5 @@
 import {Stroke, Vector2, Colour, Tool} from "./interfaces";
-import pubsub from "./core/pubsub";
+import pubsub from "./core/PubSub";
 import { PenChannel, DrawingChannel } from "./channels";
 
 interface DrawingCanvas {

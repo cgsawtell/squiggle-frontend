@@ -1,4 +1,4 @@
-import pubsub from "./core/pubsub";
+import pubsub from "./core/PubSub";
 import { NetworkErrorChannel } from "./channels";
 import errorTemplate from "./templates/error-screen.hbs"
 import { renderTemplateTo } from "./helpers/handlebars";

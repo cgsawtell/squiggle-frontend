@@ -1,4 +1,4 @@
-import pubsub from "./core/pubsub";
+import pubsub from "./core/PubSub";
 import { PenChannel } from "./channels";
 import { MouseButtons } from "./helpers/input";
 import { Vector2 } from "./interfaces";
