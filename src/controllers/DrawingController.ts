@@ -1,4 +1,4 @@
-import pubsub from "../core/pubsub";
+import pubsub from "../core/PubSub";
 import EventDelegator from "../core/EventDelegator";
 import Drawing from "../drawing";
 import * as DrawingAPI from "../api/drawing";
