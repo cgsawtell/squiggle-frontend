@@ -69,13 +69,14 @@ export default class Renderer {
 		}
 		const startCoord = this.strokeCoordToPixel(startPosition, stroke.ratio)
 		const endCoord = this.strokeCoordToPixel(endPosition, stroke.ratio)
+		const mode = stroke.mode ?? Tool.Pencil //TODO do a data migration for the old drawings so we wont need this
 
-		if(stroke.mode === Tool.Pencil){
+		if(mode === Tool.Pencil){
 			this.ctx.strokeStyle = HexColourPalete[stroke.colour]
 			this.ctx.lineWidth = 3;
 		}
 
-		if(stroke.mode === Tool.Eraser){
+		if(mode === Tool.Eraser){
 			this.ctx.strokeStyle = "#FFFFFC";
 			this.ctx.lineWidth = 10;
 
