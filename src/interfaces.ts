@@ -13,6 +13,6 @@ export enum Tool {
 export interface Stroke {
 	ratio: number;
 	colour: Colour;
-	mode: Tool;
+	mode?: Tool; //TODO do a data migration for the old drawings so this will always be defined
 	segments: Vector2[]
 }
