@@ -68,6 +68,7 @@ export default class DrawingController {
 
 	saveDrawing = async () => {
 		this.state.isSaving = true;
+		this.activeDrawing.compressStrokes();
 		if (this.activeDrawing.id) {
 			DrawingAPI.patch(this.activeDrawing)
 		}

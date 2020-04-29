@@ -2,6 +2,7 @@ import { Vector2, Stroke, Colour, Tool } from "./interfaces";
 import Drawing from "./drawing";
 import pubsub from "./core/PubSub";
 import { DrawingChannel } from "./channels";
+import { round } from "./helpers/math";
 
 const HexColourPalete: Record<Colour, string> = {
 	"Black": "#343030",

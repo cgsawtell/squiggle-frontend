@@ -1,6 +1,7 @@
 import {Stroke, Vector2, Colour, Tool} from "./interfaces";
 import pubsub from "./core/PubSub";
 import { PenChannel, DrawingChannel } from "./channels";
+import { round } from "./helpers/math";
 
 interface DrawingCanvas {
 	strokes: Stroke[];
@@ -20,9 +21,30 @@ export default class Drawing {
 		pubsub.subscribe<Colour>(DrawingChannel.ColourChange, this.handleColourChange)
 		pubsub.subscribe<Tool>(DrawingChannel.ToolChanged, this.handleToolChange)
 	}
-	// compressStrokes = () => {
-	// 	const all
-	// }
+	compressStrokes = () => {
+		const floatingPointPersision = 4
+		const compressedStrokes = this.canvas.strokes.map((stroke)=>{
+			const compressedSegments = stroke.segments
+			.map(pos => (
+					{
+						x: round(pos.x, floatingPointPersision),
+						y: round(pos.y, floatingPointPersision)
+					}
+				)
+			)
+			.filter((pos, i, arr) => {
+				if(i!==arr.length -1){
+					const nextPos = arr[i+1]
+					console.log(pos, nextPos, !(pos.x === nextPos.x && pos.y === nextPos.y));
+					
+					return !(pos.x === nextPos.x && pos.y === nextPos.y)
+				}
+				return true
+			})
+			return {...stroke,ratio:round(stroke.ratio, 2), segments: compressedSegments}
+		})
+		this.canvas.strokes = compressedStrokes
+	}
 	handleColourChange = (newColour: Colour) => {
 		this.#activeColour = newColour
 	}
