@@ -3,6 +3,7 @@ import pubsub from "./core/PubSub";
 import { NetworkErrorChannel } from "./channels";
 import DrawingController from "./controllers/DrawingController";
 import SignUpController from "./controllers/SignUpController";
+import LoginController from "./controllers/LoginController";
 
 const router = new Navigo(location.origin)
 
@@ -18,7 +19,10 @@ const initRouting = () => {
 				drawingController.newDrawing()
 			},
 			"sign-up": () => {
-				const signupController = new SignUpController();
+				new SignUpController();
+			},
+			"login": () => {
+				new LoginController();
 			}
 		}
 	)

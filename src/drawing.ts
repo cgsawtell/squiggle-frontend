@@ -20,7 +20,9 @@ export default class Drawing {
 		pubsub.subscribe<Colour>(DrawingChannel.ColourChange, this.handleColourChange)
 		pubsub.subscribe<Tool>(DrawingChannel.ToolChanged, this.handleToolChange)
 	}
-	
+	// compressStrokes = () => {
+	// 	const all
+	// }
 	handleColourChange = (newColour: Colour) => {
 		this.#activeColour = newColour
 	}

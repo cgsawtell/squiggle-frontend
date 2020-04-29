@@ -184,6 +184,9 @@ input{
 	top: 1rem;
 	opacity: 0;
 }
+.saving-indicator--active {
+	opacity: 1;
+}
 
 .error-screen {
 	position: absolute;

@@ -1,0 +1,16 @@
+<div class="sign-up-form-page">
+	<h1>Login</h1>
+	<form class="sign-up-form" id="login-form">
+		<label class="form-label" for="email">Email</label>
+		<input class="form-field {{#if errors.email}}form-field--with-error{{/if}}" type="email" name="email" id="email" autocomplete="email" value="{{values.email}}" required spellcheck="false"/>
+		{{#if errors.email}}
+			<div class="form-error">{{errors.email}}</div>
+		{{/if}}
+		<label class="form-label" for="password">Password</label>
+		<input class="form-field {{#if errors.password}}form-field--with-error{{/if}}" type="password" name="password" id="password" autocomplete="password" value="{{values.password}}" spellcheck="false" required/>
+		{{#if errors.password}}
+			<div class="form-error">{{errors.password}}</div>
+		{{/if}}
+		<input type="submit" class="btn" value="Login" />
+	</form>
+</div>

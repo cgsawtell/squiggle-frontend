@@ -15,12 +15,14 @@ import eraser from "../../assets/eraser.svg"
 import pencil from "../../assets/pencil.svg"
 
 interface DrawingControllerState {
+	isSaving: boolean,
 	activeTool: Tool,
 	activeColour: Colour,
 	icons:Record<string, string>
 }
 
 const initialState: DrawingControllerState = {
+	isSaving:false,
 	activeTool: Tool.Pencil,
 	activeColour: "Black",
 	icons: { eraser, pencil }
@@ -65,6 +67,7 @@ export default class DrawingController {
 	}
 
 	saveDrawing = async () => {
+		this.state.isSaving = true;
 		if (this.activeDrawing.id) {
 			DrawingAPI.patch(this.activeDrawing)
 		}
@@ -74,6 +77,7 @@ export default class DrawingController {
 			router.navigate(`drawing/${id}`);
 			router.resume();
 		}
+		this.state.isSaving = false;
 	}
 
 	onSaveClick = async (e: MouseEvent) => {

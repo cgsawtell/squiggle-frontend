@@ -1,6 +1,6 @@
-import wretch from "wretch";
+import { api } from "./base";
 
-const userAPI = wretch("/api/user")
+const userAPI = api.url("user")
 
 interface UserData {
 	firstName: string;
