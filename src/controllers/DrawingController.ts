@@ -76,6 +76,7 @@ export default class DrawingController {
 			const { id } = await DrawingAPI.post(this.activeDrawing)
 			router.pause();
 			router.navigate(`drawing/${id}`);
+			this.activeDrawing.id = id;
 			router.resume();
 		}
 		this.state.isSaving = false;
