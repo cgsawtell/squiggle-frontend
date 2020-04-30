@@ -33,10 +33,8 @@ export default class Drawing {
 				)
 			)
 			.filter((pos, i, arr) => {
-				if(i!==arr.length -1){
+				if(i !== arr.length - 1){
 					const nextPos = arr[i+1]
-					console.log(pos, nextPos, !(pos.x === nextPos.x && pos.y === nextPos.y));
-					
 					return !(pos.x === nextPos.x && pos.y === nextPos.y)
 				}
 				return true
